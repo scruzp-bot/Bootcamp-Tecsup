@@ -1,0 +1,17 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      retries: 5
+  ui:
+    build: .
+    command: ["python", "app/gradio_app.py"]
+    environment:
+      API_URL: http://api:8000
+    ports: ["7860:7860"]
+    depends_on:
+      api:
+        condition: service_healthy
