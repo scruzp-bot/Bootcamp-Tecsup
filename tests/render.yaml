@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: drybean-api
+    runtime: python
+    plan: free
+    autoDeploy: false   # solo despliega el CD, después de un CI en verde
+    buildCommand: pip install uv && uv sync --no-dev && uv run datos && uv run entrenar
+    startCommand: uv run api
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+  - type: web
+    name: drybean-ui
+    runtime: python
+    plan: free
+    autoDeploy: false
+    buildCommand: pip install uv && uv sync --no-dev
+    startCommand: uv run python app/gradio_app.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: API_URL
+        value: https://drybean-api.onrender.com
