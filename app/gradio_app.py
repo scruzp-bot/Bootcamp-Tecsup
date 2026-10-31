@@ -33,7 +33,7 @@ def clasificar(*values):
 
 with gr.Blocks(title="Dry Bean") as demo:
     gr.Markdown("# 🫘 Clasificador de frijol seco\nIngresa las 16 medidas del grano.")
-    inputs = [gr.Number(label=n, value=v, minimum=lo, maximum=hi) for n, lo, hi, v in FIELDS]
+    inputs = [gr.Number(label=n, value=v, step=1e-9) for n, lo, hi, v in FIELDS]
     btn = gr.Button("Clasificar", variant="primary")
     label = gr.Textbox(label="Variedad predicha")
     probs = gr.Label(label="Probabilidades", num_top_classes=7)
